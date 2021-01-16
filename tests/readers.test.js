@@ -13,6 +13,7 @@ describe('/readers', () => {
         const response = await request(app).post('/readers').send({
           name: 'Elizabeth Bennet',
           email: 'future_ms_darcy@gmail.com',
+          password: 'password1',
         });
         const newReaderRecord = await Reader.findByPk(response.body.id, {
           raw: true,
@@ -22,6 +23,26 @@ describe('/readers', () => {
         expect(response.body.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
+      });
+      it('fails if password is shorter than 9 characters', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'future_ms_darcy@gmail.com',
+          password: 'pass1',
+        });
+        expect(response.status).to.equal(404);
+        expect(response.body.error).to.equal(
+          'Password much be at least 9 characters.'
+        );
+      });
+      it('fails if email is in incorrect format', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'future_ms_darcy.com',
+          password: 'password1',
+        });
+        expect(response.status).to.equal(404);
+        expect(response.body.error).to.equal('Email is invalid.');
       });
     });
   });
@@ -36,9 +57,10 @@ describe('/readers', () => {
         Reader.create({
           name: 'Elizabeth Bennet',
           email: 'future_ms_darcy@gmail.com',
+          password: "password1",
         }),
-        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com' }),
-        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org' }),
+        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: "password1" }),
+        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: "password1" }),
       ]);
     });
 
