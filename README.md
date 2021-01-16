@@ -33,6 +33,11 @@ SQL
 Features
 
 ## Status
+<<<<<<< HEAD
 Project is: IN PROGRESS# MySQL Book Library API
 
 This repository contains the integration test suite for Book Library API challenge.
+=======
+Project is: IN PROGRESS
+
+>>>>>>> 4ebcbd1d1783213d30525ec888b4aab425993b8f
